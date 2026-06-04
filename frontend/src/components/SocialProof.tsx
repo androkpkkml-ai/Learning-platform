@@ -1,6 +1,6 @@
-/**
+﻿/**
  * SocialProof.tsx
- * Animated statistics row — real data from /api/dashboard/public-stats.
+ * Animated statistics row â€” real data from /api/dashboard/public-stats.
  * Count-up numbers triggered on scroll via GSAP ScrollTrigger.
  */
 import { useEffect, useRef, useState } from 'react';
@@ -35,37 +35,37 @@ const STAT_CONFIGS: StatConfig[] = [
     getValue: (s) => s.totalStudents,
     decimals: 0,
     suffix: '+',
-    label: 'طالب مسجّل',
+    label: 'Ø·Ø§Ù„Ø¨ Ù…Ø³Ø¬Ù‘Ù„',
     gradientFrom: '#06b6d4',
     gradientTo: '#0891b2',
     glowColor: 'rgba(6,182,212,0.3)',
   },
   {
     icon: <BookOpen className="w-5 h-5" />,
-    getValue: (s) => s.totalCourses,
+    getValue: (s) => s?.totalCourses ?? 0,
     decimals: 0,
     suffix: '+',
-    label: 'دورة متخصصة',
+    label: 'Ø¯ÙˆØ±Ø© Ù…ØªØ®ØµØµØ©',
     gradientFrom: '#7c3aed',
     gradientTo: '#6d28d9',
     glowColor: 'rgba(124,58,237,0.3)',
   },
   {
     icon: <Clock className="w-5 h-5" />,
-    getValue: (s) => s.totalHours,
+    getValue: (s) => s?.totalHours ?? 0,
     decimals: 0,
-    suffix: 'ساعة',
-    label: 'محتوى تعليمي',
+    suffix: 'Ø³Ø§Ø¹Ø©',
+    label: 'Ù…Ø­ØªÙˆÙ‰ ØªØ¹Ù„ÙŠÙ…ÙŠ',
     gradientFrom: '#d946ef',
     gradientTo: '#c026d3',
     glowColor: 'rgba(217,70,239,0.3)',
   },
   {
     icon: <Star className="w-5 h-5" />,
-    getValue: (s) => s.avgRating,
+    getValue: (s) => s?.avgRating ?? 0,
     decimals: 1,
-    suffix: '★',
-    label: 'تقييم المتعلمين',
+    suffix: 'â˜…',
+    label: 'ØªÙ‚ÙŠÙŠÙ… Ø§Ù„Ù…ØªØ¹Ù„Ù…ÙŠÙ†',
     gradientFrom: '#fbbf24',
     gradientTo: '#f59e0b',
     glowColor: 'rgba(251,191,36,0.3)',
@@ -77,17 +77,17 @@ const SocialProof = () => {
   const counterRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const [stats, setStats] = useState<PlatformStats | null>(null);
 
-  // ─── 1. Fetch real stats from backend ───────────────────────
+  // â”€â”€â”€ 1. Fetch real stats from backend â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   useEffect(() => {
     api.get<PlatformStats>('/dashboard/public-stats')
       .then((res) => setStats(res.data))
       .catch(() => {
-        // Graceful fallback — keep zeros
+        // Graceful fallback â€” keep zeros
         setStats({ totalStudents: 0, totalCourses: 0, totalHours: 0, avgRating: 0 });
       });
   }, []);
 
-  // ─── 2. GSAP animations (run after data arrives) ─────────────
+  // â”€â”€â”€ 2. GSAP animations (run after data arrives) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   useEffect(() => {
     if (!stats || !sectionRef.current) return;
 
@@ -149,7 +149,7 @@ const SocialProof = () => {
     <div
       ref={sectionRef}
       className="flex flex-wrap justify-center gap-4 mt-10 w-full"
-      aria-label="إحصائيات المنصة"
+      aria-label="Ø¥Ø­ØµØ§Ø¦ÙŠØ§Øª Ø§Ù„Ù…Ù†ØµØ©"
     >
       {STAT_CONFIGS.map((cfg, i) => (
         <div
@@ -195,7 +195,7 @@ const SocialProof = () => {
               <span className="text-2xl font-extrabold text-body-primary tabular-nums">
                 <span ref={(el) => { counterRefs.current[i] = el; }}>
                   {/* Show placeholder while loading */}
-                  {stats ? (cfg.decimals > 0 ? cfg.getValue(stats).toFixed(cfg.decimals) : cfg.getValue(stats).toString()) : '—'}
+                  {stats ? (cfg.decimals > 0 ? cfg.getValue(stats).toFixed(cfg.decimals) : cfg.getValue(stats).toString()) : 'â€”'}
                 </span>
               </span>
             </div>
@@ -208,3 +208,4 @@ const SocialProof = () => {
 };
 
 export default SocialProof;
+
